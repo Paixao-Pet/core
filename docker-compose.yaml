@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+
+  api:
+    build: .
+    depends_on:
+      - database
+    environment:
+      DATABASE_HOST: "database:5432"
+    ports:
+      - "8224:8080"
+    networks:
+      petnet:
+
+  database:
+    image: postgres
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-d", "postgres", "-U", "postgres" ]
+      timeout: 5s
+      interval: 2s
+      retries: 5
+    environment:
+      POSTGRES_PASSWORD: paixaopet
+    ports:
+      - "5432:5432"
+    networks:
+      petnet:
+
+networks:
+  petnet:
