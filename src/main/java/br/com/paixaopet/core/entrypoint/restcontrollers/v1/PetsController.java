@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.net.URI;
 
 import static java.lang.String.format;
@@ -19,7 +20,7 @@ public class PetsController {
     public static final String PATH = "/v1/pets";
 
     @PostMapping
-    public ResponseEntity<Void> create(@RequestBody CreatePetRequest request) {
+    public ResponseEntity<Void> create(@Valid @RequestBody CreatePetRequest request) {
         var id = "15";
 
         var location = URI.create(PATH.concat(format("/%s", id)));
