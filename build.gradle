@@ -5,38 +5,60 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.6.10'
 }
 
+ext {
+    postgresVersion = '42.3.1'
+    jacksonDatatypeJsr310Version = '2.13.1'
+    javaVersion = '17'
+}
+
 group = 'br.com.paixaopet'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '17'
+sourceCompatibility = "${javaVersion}" as Object
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation('org.springframework.boot:spring-boot-starter-web') {
         exclude module: 'spring-boot-starter-tomcat'
     }
-    implementation 'org.springframework.boot:spring-boot-starter-validation'
-    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.1'
-    implementation 'org.springframework.boot:spring-boot-starter-undertow'
-    implementation 'org.postgresql:postgresql:42.3.1'
+
+    implementation(
+            /* database */
+            'org.springframework.boot:spring-boot-starter-data-jpa',
+            "org.postgresql:postgresql:${postgresVersion}",
+
+            /* validation */
+            'org.springframework.boot:spring-boot-starter-validation',
+
+            /* serializer */
+            "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${jacksonDatatypeJsr310Version}",
+
+            /* server */
+            'org.springframework.boot:spring-boot-starter-undertow'
+    )
+
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+
+    testImplementation(
+            'org.springframework.boot:spring-boot-starter-test',
+            'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+    )
 }
 
 test {
     useJUnitPlatform()
 }
+
 compileKotlin {
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = "${javaVersion}"
     }
 }
+
 compileTestKotlin {
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = "${javaVersion}"
     }
 }
