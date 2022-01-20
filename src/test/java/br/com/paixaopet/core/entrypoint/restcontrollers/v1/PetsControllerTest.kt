@@ -2,7 +2,7 @@ package br.com.paixaopet.core.entrypoint.restcontrollers.v1
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import factories.CreatePetRequestFactory
+import factories.CreatePetRequestFactory.Companion.validCreatePetRequest
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -31,9 +31,9 @@ class PetsControllerTest {
     @Test
     fun `when POST to _v1_pets with valid request then receives status code 201 CREATED`() {
         mockMvc.perform(
-                post(PetsController.PATH)
-                        .contentType(APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(CreatePetRequestFactory.valid()))
+            post(PetsController.PATH)
+                .contentType(APPLICATION_JSON)
+                .content(mapper.writeValueAsString(validCreatePetRequest()))
         ).andExpect(status().isCreated)
     }
 }
