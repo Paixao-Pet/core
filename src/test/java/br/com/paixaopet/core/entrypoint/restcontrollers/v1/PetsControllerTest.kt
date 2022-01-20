@@ -36,4 +36,10 @@ class PetsControllerTest {
                 .content(mapper.writeValueAsString(validCreatePetRequest()))
         ).andExpect(status().isCreated)
     }
+
+    @Test
+    fun `when POST to _v1_pets without request body then receives status code 400 BAD_REQUEST`() {
+        mockMvc.perform(post(PetsController.PATH)).andExpect(status().isBadRequest)
+    }
+
 }
