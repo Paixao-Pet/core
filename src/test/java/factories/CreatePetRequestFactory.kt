@@ -5,7 +5,6 @@ import br.com.paixaopet.core.business.entities.Specie
 import br.com.paixaopet.core.entrypoint.restcontrollers.v1.requests.CreatePetRequest
 import com.github.javafaker.Faker
 import java.security.SecureRandom
-import java.time.LocalDate
 import java.time.ZoneId
 import java.util.*
 
