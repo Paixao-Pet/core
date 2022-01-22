@@ -46,7 +46,8 @@ dependencies {
     testImplementation(
             'org.springframework.boot:spring-boot-starter-test',
             'org.jetbrains.kotlin:kotlin-stdlib-jdk8',
-            "com.github.javafaker:javafaker:${javaFakerVersion}"
+            "com.github.javafaker:javafaker:${javaFakerVersion}",
+            'org.mockito:mockito-inline'
     )
 }
 
