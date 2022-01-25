@@ -1,22 +1,19 @@
-package factories
+package utilities.factories
 
 import br.com.paixaopet.core.business.entities.Gender
 import br.com.paixaopet.core.business.entities.Specie
 import br.com.paixaopet.core.entrypoint.restcontrollers.v1.requests.CreatePetRequest
-import com.github.javafaker.Faker
-import java.security.SecureRandom
-import java.time.ZoneId
+import utilities.EnumRandom.Companion.anyEnumOf
+import utilities.FakerProvider.Companion.getFaker
 import java.time.ZoneId.systemDefault
 import java.util.*
 
 class CreatePetRequestFactory private constructor() {
 
     companion object {
-        private var random: SecureRandom = SecureRandom()
-
-        var faker: Faker = Faker(Locale("pt-BR"))
-
         fun validCreatePetRequest(): CreatePetRequest {
+            val faker = getFaker()
+
             val profilePhoto = Base64.getEncoder().encodeToString(
                 faker.bothify("???").toByteArray()
             )
@@ -35,11 +32,6 @@ class CreatePetRequestFactory private constructor() {
                 approximateAge,
                 listOf()
             )
-        }
-
-        fun <T : Enum<*>?> anyEnumOf(clazz: Class<T>): T {
-            val x: Int = random.nextInt(clazz.enumConstants.size)
-            return clazz.enumConstants[x]
         }
     }
 }

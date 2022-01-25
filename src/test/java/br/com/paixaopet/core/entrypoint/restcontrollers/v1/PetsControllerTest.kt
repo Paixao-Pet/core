@@ -2,7 +2,7 @@ package br.com.paixaopet.core.entrypoint.restcontrollers.v1
 
 import br.com.paixaopet.core.configurations.SerializerDeserializerConfiguration
 import com.fasterxml.jackson.databind.ObjectMapper
-import factories.CreatePetRequestFactory.Companion.validCreatePetRequest
+import utilities.factories.CreatePetRequestFactory.Companion.validCreatePetRequest
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
@@ -52,7 +52,7 @@ class PetsControllerTest {
     fun `when POST to _v1_pets with request body with ${propertyName} equal to ${propertyValue} then receives status code 400 BAD_REQUEST`(
         propertyName: String, propertyValue: String?
     ) {
-        val validCreatePetRequest = spy(validCreatePetRequest())
+        val validCreatePetRequest = validCreatePetRequest()
 
         val jsonContent = mapper.writeValueAsString(validCreatePetRequest).replace(
             "\"${propertyName}\":\".*\",".toRegex(),
@@ -71,7 +71,7 @@ class PetsControllerTest {
     fun `when POST to _v1_pets with request body with ${propertyName} equal to null then receives status code 400 BAD_REQUEST`(
         propertyName: String
     ) {
-        val validCreatePetRequest = spy(validCreatePetRequest())
+        val validCreatePetRequest = validCreatePetRequest()
 
         val jsonContent = mapper.writeValueAsString(validCreatePetRequest).replace(
             "\"name\":([a-z|A-Z]*|\".*\"|[0-9]*),".toRegex(),

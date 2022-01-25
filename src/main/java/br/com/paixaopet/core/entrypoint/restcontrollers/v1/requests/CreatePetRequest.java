@@ -23,7 +23,7 @@ public record CreatePetRequest(
 ) {
 
     @AssertFalse
-    public boolean isBirthDateRequired() {
+    public boolean isBirthDateAndApproximateDateEqualToNull() {
         return approximateAge == null && birthDate == null;
     }
 }
