@@ -6,6 +6,7 @@ import br.com.paixaopet.core.entrypoint.restcontrollers.v1.requests.CreatePetReq
 import com.github.javafaker.Faker
 import java.security.SecureRandom
 import java.time.ZoneId
+import java.time.ZoneId.systemDefault
 import java.util.*
 
 class CreatePetRequestFactory private constructor() {
@@ -19,7 +20,7 @@ class CreatePetRequestFactory private constructor() {
             val profilePhoto = Base64.getEncoder().encodeToString(
                 faker.bothify("???").toByteArray()
             )
-            val birthDate = faker.date().birthday().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+            val birthDate = faker.date().birthday().toInstant().atZone(systemDefault()).toLocalDate()
 
             val approximateAge = faker.random().nextInt(10, 150) / 100F;
 
