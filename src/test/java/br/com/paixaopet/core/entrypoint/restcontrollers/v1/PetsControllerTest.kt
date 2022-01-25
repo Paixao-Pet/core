@@ -78,7 +78,7 @@ class PetsControllerTest {
         val validCreatePetRequest = validCreatePetRequest()
 
         val jsonContent = mapper.writeValueAsString(validCreatePetRequest).replace(
-            "\"name\":([a-z|A-Z]*|\".*\"|[0-9]*),".toRegex(),
+            "\"${propertyName}\":([a-z|A-Z]*|\".*\"|[0-9]*|\\[.*\\])(,|})".toRegex(),
             "\"${propertyName}\":null,\""
         )
 
