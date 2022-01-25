@@ -45,8 +45,10 @@ class PetsControllerTest {
         value = [
             "name,",
             "name, \"\"",
+            "name, \"   \"",
             "profile_photo,",
             "profile_photo, \"\"",
+            "profile_photo, \"   \"",
             "photos, [\"\"]",
             "photos, [\"   \"]",
             "special_cares, [\"\"]",
