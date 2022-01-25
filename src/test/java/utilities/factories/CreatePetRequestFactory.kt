@@ -24,13 +24,13 @@ class CreatePetRequestFactory private constructor() {
             return CreatePetRequest(
                 faker.name().firstName(),
                 profilePhoto,
-                listOf(),
+                setOf(),
                 anyEnumOf(Specie::class.java),
                 anyEnumOf(Gender::class.java),
                 faker.bool().bool(),
                 birthDate,
                 approximateAge,
-                listOf()
+                setOf()
             )
         }
     }

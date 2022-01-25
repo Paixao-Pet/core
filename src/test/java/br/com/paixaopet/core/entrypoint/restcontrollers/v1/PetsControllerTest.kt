@@ -46,7 +46,11 @@ class PetsControllerTest {
             "name,",
             "name, \"\"",
             "profile_photo,",
-            "profile_photo, \"\""
+            "profile_photo, \"\"",
+            "photos, [\"\"]",
+            "photos, [\"   \"]",
+            "special_cares, [\"\"]",
+            "special_cares, [\"   \"]"
         ]
     )
     fun `when POST to _v1_pets with request body with ${propertyName} equal to ${propertyValue} then receives status code 400 BAD_REQUEST`(
@@ -55,7 +59,7 @@ class PetsControllerTest {
         val validCreatePetRequest = validCreatePetRequest()
 
         val jsonContent = mapper.writeValueAsString(validCreatePetRequest).replace(
-            "\"${propertyName}\":\".*\",".toRegex(),
+            "\"${propertyName}\":([a-z|A-Z]*|\".*\"|[0-9]*|\\[.*\\])(,|})".toRegex(),
             "\"${propertyName}\":${propertyValue},"
         )
 
