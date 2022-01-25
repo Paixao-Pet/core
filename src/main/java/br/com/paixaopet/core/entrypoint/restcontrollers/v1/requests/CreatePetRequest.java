@@ -2,6 +2,7 @@ package br.com.paixaopet.core.entrypoint.restcontrollers.v1.requests;
 
 import br.com.paixaopet.core.business.entities.Gender;
 import br.com.paixaopet.core.business.entities.Specie;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.validation.constraints.AssertFalse;
 import javax.validation.constraints.DecimalMin;
@@ -22,6 +23,7 @@ public record CreatePetRequest(
         List<String> specialCares
 ) {
 
+    @JsonIgnore
     @AssertFalse
     public boolean isBirthDateAndApproximateDateEqualToNull() {
         return approximateAge == null && birthDate == null;
