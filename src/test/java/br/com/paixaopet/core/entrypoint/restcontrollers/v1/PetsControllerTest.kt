@@ -135,4 +135,33 @@ class PetsControllerTest {
             post(PetsController.PATH).contentType(APPLICATION_JSON).content(jsonContent)
         ).andExpect(status().isCreated)
     }
+
+    @Test
+    fun `when POST to _v1_pets with request body containing profilePhoto not encoded in base64 then receives status code 400 BAD_REQUEST`() {
+        val validCreatePetRequest = spy(validCreatePetRequest())
+
+        doReturn(getFaker().bothify("???")).`when`(validCreatePetRequest).profilePhoto
+
+        val jsonContent = mapper.writeValueAsString(validCreatePetRequest)
+
+        mockMvc.perform(
+            post(PetsController.PATH).contentType(APPLICATION_JSON).content(jsonContent)
+        ).andExpect(status().isBadRequest)
+    }
+
+    @Test
+    fun `when POST to _v1_pets with request body containing photos not encoded in base64 then receives status code 400 BAD_REQUEST`() {
+        val validCreatePetRequest = spy(validCreatePetRequest())
+
+        val photo1 = getFaker().bothify("???")
+        val photo2 = getFaker().bothify("???")
+
+        doReturn(listOf(photo1, photo2)).`when`(validCreatePetRequest).photos
+
+        val jsonContent = mapper.writeValueAsString(validCreatePetRequest)
+
+        mockMvc.perform(
+            post(PetsController.PATH).contentType(APPLICATION_JSON).content(jsonContent)
+        ).andExpect(status().isBadRequest)
+    }
 }
