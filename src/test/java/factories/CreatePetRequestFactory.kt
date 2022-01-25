@@ -21,6 +21,8 @@ class CreatePetRequestFactory private constructor() {
             )
             val birthDate = faker.date().birthday().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
 
+            val approximateAge = faker.random().nextInt(10, 150) / 100F;
+
             return CreatePetRequest(
                 faker.name().firstName(),
                 profilePhoto,
@@ -29,7 +31,7 @@ class CreatePetRequestFactory private constructor() {
                 anyEnumOf(Gender::class.java),
                 faker.bool().bool(),
                 birthDate,
-                faker.random().nextDouble().toFloat(),
+                approximateAge,
                 listOf()
             )
         }

@@ -1,6 +1,7 @@
 package br.com.paixaopet.core.entrypoint.restcontrollers.v1
 
 import br.com.paixaopet.core.configurations.SerializerDeserializerConfiguration
+import br.com.paixaopet.core.entrypoint.restcontrollers.v1.requests.CreatePetRequest
 import com.fasterxml.jackson.databind.ObjectMapper
 import factories.CreatePetRequestFactory.Companion.validCreatePetRequest
 import org.junit.jupiter.api.Test
