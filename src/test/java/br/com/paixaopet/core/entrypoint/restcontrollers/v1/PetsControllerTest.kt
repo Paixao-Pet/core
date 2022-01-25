@@ -160,7 +160,7 @@ class PetsControllerTest {
         val photo1 = getFaker().bothify("???")
         val photo2 = getFaker().bothify("???")
 
-        doReturn(listOf(photo1, photo2)).`when`(validCreatePetRequest).photos
+        doReturn(setOf(photo1, photo2)).`when`(validCreatePetRequest).photos
 
         val jsonContent = mapper.writeValueAsString(validCreatePetRequest)
 
