@@ -57,6 +57,11 @@ dependencies {
 
 test {
     useJUnitPlatform()
+
+    testLogging {
+        events "SKIPPED", "STANDARD_ERROR"
+        exceptionFormat 'FULL'
+    }
 }
 
 compileKotlin {
