@@ -16,8 +16,11 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import utilities.FakerProvider.Companion.futureZonedDateTime
 import utilities.FakerProvider.Companion.getFaker
+import utilities.FakerProvider.Companion.pastZonedDateTime
+import utilities.RegexPatterns.Companion.getJsonPropertyValue
 import utilities.factories.CreatePetRequestFactory.Companion.validCreatePetRequest
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter.ofPattern
 
 @WebMvcTest(controllers = [PetsController::class, SerializerDeserializerConfiguration::class])
 class PetsControllerTest {
@@ -63,8 +66,8 @@ class PetsControllerTest {
         val validCreatePetRequest = validCreatePetRequest()
 
         val jsonContent = mapper.writeValueAsString(validCreatePetRequest).replace(
-            "\"${propertyName}\":([a-z|A-Z]*|\".*\"|[0-9]*|\\[.*\\])(,|})".toRegex(),
-            "\"${propertyName}\":${propertyValue},"
+            getJsonPropertyValue(propertyName),
+            propertyValue.toString()
         )
 
         mockMvc.perform(
@@ -82,8 +85,8 @@ class PetsControllerTest {
         val validCreatePetRequest = validCreatePetRequest()
 
         val jsonContent = mapper.writeValueAsString(validCreatePetRequest).replace(
-            "\"${propertyName}\":([a-z|A-Z]*|\".*\"|[0-9]*|\\[.*\\])(,|})".toRegex(),
-            "\"${propertyName}\":null,\""
+            getJsonPropertyValue(propertyName),
+            "null"
         )
 
         mockMvc.perform(
@@ -193,6 +196,22 @@ class PetsControllerTest {
         doReturn(futureZonedDateTime(15).toLocalDate()).`when`(validCreatePetRequest).birthDate
 
         val jsonContent = mapper.writeValueAsString(validCreatePetRequest)
+
+        mockMvc.perform(
+            post(PetsController.PATH).contentType(APPLICATION_JSON).content(jsonContent)
+        ).andExpect(status().isBadRequest)
+    }
+
+    @Test
+    fun `when POST to _v1_pets with request body containing birthDate non formatted like ISO8601 then receives status code 400 BAD_REQUEST`() {
+        val validCreatePetRequest = validCreatePetRequest()
+
+        val birthDateInBrazilFormat = pastZonedDateTime(15).format(ofPattern("dd/MM/yyyy"))
+
+        val jsonContent = mapper.writeValueAsString(validCreatePetRequest).replace(
+            getJsonPropertyValue("birth_date"),
+            birthDateInBrazilFormat
+        )
 
         mockMvc.perform(
             post(PetsController.PATH).contentType(APPLICATION_JSON).content(jsonContent)
