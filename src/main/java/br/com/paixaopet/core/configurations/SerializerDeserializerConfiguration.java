@@ -1,6 +1,8 @@
 package br.com.paixaopet.core.configurations;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import io.swagger.v3.core.jackson.ModelResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
@@ -17,5 +19,10 @@ public class SerializerDeserializerConfiguration {
                 .propertyNamingStrategy(SNAKE_CASE)
                 .simpleDateFormat(DATE_FORMAT_STR_ISO8601)
                 .modules(new RecordNamingStrategyPatchModule(), new JavaTimeModule());
+    }
+
+    @Bean
+    public ModelResolver modelResolver(ObjectMapper objectMapper) {
+        return new ModelResolver(objectMapper);
     }
 }
