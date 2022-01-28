@@ -2,7 +2,6 @@ package br.com.paixaopet.core.entrypoint.restcontrollers.v1
 
 import br.com.paixaopet.core.configurations.SerializerDeserializerConfiguration
 import com.fasterxml.jackson.databind.ObjectMapper
-import utilities.factories.CreatePetRequestFactory.Companion.validCreatePetRequest
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
@@ -15,7 +14,10 @@ import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import utilities.FakerProvider.Companion.futureZonedDateTime
 import utilities.FakerProvider.Companion.getFaker
+import utilities.factories.CreatePetRequestFactory.Companion.validCreatePetRequest
+import java.time.LocalDate
 
 @WebMvcTest(controllers = [PetsController::class, SerializerDeserializerConfiguration::class])
 class PetsControllerTest {
@@ -163,6 +165,32 @@ class PetsControllerTest {
         val photo2 = getFaker().bothify("???")
 
         doReturn(setOf(photo1, photo2)).`when`(validCreatePetRequest).photos
+
+        val jsonContent = mapper.writeValueAsString(validCreatePetRequest)
+
+        mockMvc.perform(
+            post(PetsController.PATH).contentType(APPLICATION_JSON).content(jsonContent)
+        ).andExpect(status().isBadRequest)
+    }
+
+    @Test
+    fun `when POST to _v1_pets with request body containing birthDate equal to now then receives status code 400 BAD_REQUEST`() {
+        val validCreatePetRequest = spy(validCreatePetRequest())
+
+        doReturn(LocalDate.now()).`when`(validCreatePetRequest).birthDate
+
+        val jsonContent = mapper.writeValueAsString(validCreatePetRequest)
+
+        mockMvc.perform(
+            post(PetsController.PATH).contentType(APPLICATION_JSON).content(jsonContent)
+        ).andExpect(status().isBadRequest)
+    }
+
+    @Test
+    fun `when POST to _v1_pets with request body containing future birthDate then receives status code 400 BAD_REQUEST`() {
+        val validCreatePetRequest = spy(validCreatePetRequest())
+
+        doReturn(futureZonedDateTime(15).toLocalDate()).`when`(validCreatePetRequest).birthDate
 
         val jsonContent = mapper.writeValueAsString(validCreatePetRequest)
 

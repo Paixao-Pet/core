@@ -5,7 +5,7 @@ import br.com.paixaopet.core.business.entities.Specie
 import br.com.paixaopet.core.entrypoint.restcontrollers.v1.requests.CreatePetRequest
 import utilities.EnumRandom.Companion.anyEnumOf
 import utilities.FakerProvider.Companion.getFaker
-import java.time.ZoneId.systemDefault
+import utilities.FakerProvider.Companion.pastZonedDateTime
 import java.util.*
 
 class CreatePetRequestFactory private constructor() {
@@ -17,7 +17,7 @@ class CreatePetRequestFactory private constructor() {
             val profilePhoto = Base64.getEncoder().encodeToString(
                 faker.bothify("???").toByteArray()
             )
-            val birthDate = faker.date().birthday().toInstant().atZone(systemDefault()).toLocalDate()
+            val birthDate = pastZonedDateTime(15).toLocalDate()
 
             val approximateAge = faker.random().nextInt(10, 150) / 100F;
 

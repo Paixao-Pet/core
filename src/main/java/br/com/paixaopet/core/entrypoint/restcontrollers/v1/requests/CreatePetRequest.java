@@ -9,6 +9,7 @@ import javax.validation.constraints.AssertFalse;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 import java.util.Set;
@@ -20,7 +21,7 @@ public record CreatePetRequest(
         @NotNull Specie specie,
         @NotNull Gender gender,
         @NotNull Boolean castrated,
-        LocalDate birthDate,
+        @Past LocalDate birthDate,
         @DecimalMin("0.1") Float approximateAge,
         Set<@NotBlank String> specialCares
 ) {
