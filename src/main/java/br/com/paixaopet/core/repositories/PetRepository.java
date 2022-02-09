@@ -4,7 +4,4 @@ import br.com.paixaopet.core.business.entities.Pet;
 import org.springframework.data.repository.CrudRepository;
 
 public interface PetRepository extends CrudRepository<Pet, Long> {
-
-    @Override
-    <S extends Pet> S save(S entity);
 }
